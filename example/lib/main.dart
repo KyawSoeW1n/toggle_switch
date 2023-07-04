@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toggle_switch/model/toggle_model.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -30,7 +31,11 @@ class MyApp extends StatelessWidget {
                 ToggleSwitch(
                   initialLabelIndex: 0,
                   totalSwitches: 3,
-                  labels: ['America', 'Canada', 'Mexico'],
+                  labels: [
+                    ToggleModel(Text("America"), true),
+                    ToggleModel(Text("Canada"), true),
+                    ToggleModel(Text("Mexico"), true),
+                  ],
                   onToggle: (index) {
                     print('switched to: $index');
                   },
@@ -53,7 +58,12 @@ class MyApp extends StatelessWidget {
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.grey[900],
                   totalSwitches: 3,
-                  labels: ['Tall', 'Grande', 'Venti'],
+                  labels: [
+                    // 'Tall', 'Grande', 'Venti'
+                    ToggleModel(Text("Tall"), true),
+                    ToggleModel(Text("Grande"), true),
+                    ToggleModel(Text("Venti"), false),
+                  ],
                   onToggle: (index) {
                     print('switched to: $index');
                   },
@@ -76,7 +86,10 @@ class MyApp extends StatelessWidget {
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.white,
                   totalSwitches: 2,
-                  labels: ['YES', ''],
+                  labels: [
+                    ToggleModel(Text("YES"), true),
+                    ToggleModel(Text(''), false),
+                  ],
                   icons: [null, FontAwesomeIcons.times],
                   onToggle: (index) {
                     print('switched to: $index');
@@ -98,7 +111,10 @@ class MyApp extends StatelessWidget {
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.white,
                   totalSwitches: 2,
-                  labels: ['Male', 'Female'],
+                  labels: [
+                    ToggleModel(Text("Male"), true),
+                    ToggleModel(Text("Female"), true),
+                  ],
                   icons: [FontAwesomeIcons.mars, FontAwesomeIcons.venus],
                   activeBgColors: [
                     [Colors.blue],
@@ -241,7 +257,10 @@ class MyApp extends StatelessWidget {
                   inactiveFgColor: Colors.white,
                   initialLabelIndex: 1,
                   totalSwitches: 2,
-                  labels: ['True', 'False'],
+                  labels: [
+                    ToggleModel(Text("True"), true),
+                    ToggleModel(Text("False"), true),
+                  ],
                   radiusStyle: true,
                   onToggle: (index) {
                     print('switched to: $index');
@@ -260,9 +279,14 @@ class MyApp extends StatelessWidget {
                   cornerRadius: 20.0,
                   inactiveFgColor: Colors.white,
                   initialLabelIndex: null,
-                  doubleTapDisable: true, // re-tap active widget to de-activate
+                  doubleTapDisable: true,
+                  // re-tap active widget to de-activate
                   totalSwitches: 3,
-                  labels: ['Normal', 'Bold', 'Italic'],
+                  labels: [
+                    ToggleModel(Text("Normal"), true),
+                    ToggleModel(Text("Bold"), true),
+                    ToggleModel(Text("Italic"), true),
+                  ],
                   customTextStyles: [
                     null,
                     TextStyle(
@@ -356,7 +380,12 @@ class MyApp extends StatelessWidget {
                     [Colors.orange.shade100],
                     [Colors.blue.shade100]
                   ],
-                  labels: ['Spring', 'Summer', 'Fall', 'Winter'],
+                  labels: [
+                    ToggleModel(Text("Spring"), true),
+                    ToggleModel(Text("Summer"), true),
+                    ToggleModel(Text("Fall"), true),
+                    ToggleModel(Text("Winter"), true),
+                  ],
                   onToggle: (index) {
                     print('switched to: $index');
                   },
@@ -385,9 +414,21 @@ class MyApp extends StatelessWidget {
                         inactiveBgColor: Colors.grey,
                         inactiveFgColor: Colors.white,
                         labels: [
-                          'Yes, the statement above is true',
-                          'False',
-                          'Other'
+                          ToggleModel(
+                              Text(
+                                'Yes, the statement above is true',
+                              ),
+                              true),
+                          ToggleModel(
+                              Text(
+                                'False',
+                              ),
+                              true),
+                          ToggleModel(
+                              Text(
+                                'False',
+                              ),
+                              true),
                         ],
                         onToggle: (index) {
                           print('switched to: $index');
@@ -414,7 +455,18 @@ class MyApp extends StatelessWidget {
                   multiLineText: true,
                   centerText: true,
                   totalSwitches: 2,
-                  labels: ['This is multi-line text.', 'One line'],
+                  labels: [
+                    ToggleModel(
+                        Text(
+                          'This is multi-line text.',
+                        ),
+                        true),
+                    ToggleModel(
+                        Text(
+                          'One line',
+                        ),
+                        true),
+                  ],
                   onToggle: (index) {
                     print('switched to: $index');
                   },

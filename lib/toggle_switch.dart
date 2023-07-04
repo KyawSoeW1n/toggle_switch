@@ -4,6 +4,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'model/toggle_model.dart';
+
 typedef OnToggle = void Function(int? index);
 typedef CancelToggle = Future<bool> Function(int? index);
 
@@ -28,7 +30,7 @@ class ToggleSwitch extends StatefulWidget {
   final Color? inactiveFgColor;
 
   /// List of labels
-  final List<String>? labels;
+  final List<ToggleModel>? labels;
 
   /// Total number of switches
   final int? totalSwitches;
@@ -50,6 +52,9 @@ class ToggleSwitch extends StatefulWidget {
 
   /// List of custom heights
   final List<double>? customHeights;
+
+  /// Set Disable Opacity
+  final double disableOpacity;
 
   /// Minimum switch width
   final double minWidth;
@@ -133,6 +138,7 @@ class ToggleSwitch extends StatefulWidget {
       this.padding = 0.0,
       this.cornerRadius = 8.0,
       this.initialLabelIndex = 0,
+      this.disableOpacity = 0.4,
       this.minWidth = 72.0,
       this.minHeight = 40.0,
       this.changeOnTap = true,
@@ -414,58 +420,74 @@ class _ToggleSwitchState extends State<ToggleSwitch>
                   }
 
                   /// Returns switch item
-                  return GestureDetector(
-                    onTap: () => _handleOnTap(index ~/ 2),
-                    child: AnimatedContainer(
-                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                      constraints: BoxConstraints(
-                        maxWidth: widget.isVertical
-                            ? BoxConstraints().maxWidth
-                            : _calculateWidth(index ~/ 2, totalSwitches),
-                        maxHeight: widget.isVertical
-                            ? _calculateHeight(index ~/ 2, totalSwitches)
-                            : BoxConstraints().maxHeight,
-                      ),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: active ? activeBorder : null,
-                        borderRadius: widget.radiusStyle
-                            ? BorderRadius.all(
-                                Radius.circular(widget.cornerRadius))
-                            : cornerRadius,
-                        gradient: LinearGradient(
-                          colors: bgColor!.length == 1
-                              ? [bgColor[0], bgColor[0]]
-                              : bgColor,
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                  return Opacity(
+                    opacity: widget.labels != null
+                        ? widget.labels![index ~/ 2].isEnable
+                            ? 1
+                            : widget.disableOpacity
+                        : widget.icons != null
+                            ? 1
+                            : widget.disableOpacity,
+                    child: GestureDetector(
+                      onTap: () => widget.labels != null
+                          ? widget.labels![index ~/ 2].isEnable
+                              ? _handleOnTap(index ~/ 2)
+                              : null
+                          : widget.icons != null
+                              ? _handleOnTap(index ~/ 2)
+                              : null,
+                      child: AnimatedContainer(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        constraints: BoxConstraints(
+                          maxWidth: widget.isVertical
+                              ? BoxConstraints().maxWidth
+                              : _calculateWidth(index ~/ 2, totalSwitches),
+                          maxHeight: widget.isVertical
+                              ? _calculateHeight(index ~/ 2, totalSwitches)
+                              : BoxConstraints().maxHeight,
                         ),
-                      ),
-                      duration: Duration(
-                          milliseconds:
-                              widget.animate ? widget.animationDuration : 0),
-                      curve: widget.curve,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          icon,
-                          Flexible(
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  left: (icon is Container) ? 0.0 : 5.0),
-                              child: Text(
-                                widget.labels?[index ~/ 2] ?? '',
-                                textAlign: (widget.centerText)
-                                    ? TextAlign.center
-                                    : null,
-                                style: textStyle,
-                                overflow: (!widget.multiLineText)
-                                    ? TextOverflow.ellipsis
-                                    : null,
-                              ),
-                            ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: active ? activeBorder : null,
+                          borderRadius: widget.radiusStyle
+                              ? BorderRadius.all(
+                                  Radius.circular(widget.cornerRadius))
+                              : cornerRadius,
+                          gradient: LinearGradient(
+                            colors: bgColor!.length == 1
+                                ? [bgColor[0], bgColor[0]]
+                                : bgColor,
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
-                        ],
+                        ),
+                        duration: Duration(
+                            milliseconds:
+                                widget.animate ? widget.animationDuration : 0),
+                        curve: widget.curve,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            icon,
+                            Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: (icon is Container) ? 0.0 : 5.0),
+                                  child: widget.labels?[index ~/ 2].label
+                                  // child: Text(
+                                  //   widget.labels?[index ~/ 2] ?? '',
+                                  //   textAlign: (widget.centerText)
+                                  //       ? TextAlign.center
+                                  //       : null,
+                                  //   style: textStyle,
+                                  //   overflow: (!widget.multiLineText)
+                                  //       ? TextOverflow.ellipsis
+                                  //       : null,
+                                  // ),
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
